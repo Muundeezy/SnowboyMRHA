@@ -427,20 +427,20 @@ See [Full Documentation](http://docs.kitt.ai/snowboy).
 
 ## Build your own models by command (support both Linux and macOS)
 * Install environment
-
+```
     virtualenv -p python2 venv/snowboy
     source venv/snowboy/bin/activate
     cd examples/Python
     pip install -r requirements.txt
-
+```
 * Record 3 wav files with your own hotword, save it under `examples/Python`
 * Run the following commands to train your personal model
 
-    python model_generator.py -r1=record1.wav -r2=record2.wav -r3=record3.wav -lang=en -n=my_snowboy_model
+    `python model_generator.py -r1=record1.wav -r2=record2.wav -r3=record3.wav -lang=en -n=my_snowboy_model`
 
 * For more information about parameters, run
 
-    python model_generator.py -h
+    `python model_generator.py -h`
 
 ## Change Log
 
