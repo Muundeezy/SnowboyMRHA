@@ -425,7 +425,7 @@ You are probably using an old version of SWIG. Please upgrade. We have tested wi
 
 See [Full Documentation](http://docs.kitt.ai/snowboy).
 
-## Build your own models by command (support both Linux and macOS)
+## Build your own models by commands (support both Linux and macOS)
 * Install environment
 ```
     virtualenv -p python2 venv/snowboy
@@ -433,12 +433,12 @@ See [Full Documentation](http://docs.kitt.ai/snowboy).
     cd examples/Python
     pip install -r requirements.txt
 ```
-* Record 3 wav files with your own hotword, save it under `examples/Python`
-* Run the following commands to train your personal model
+* Record 3 wav files (16000 sample rate, 16 bits, 1 channel) with your own hotword (e.g. using `rec` command), save it under `examples/Python`
+* Run the following command to train your personal model (`record1.wav`, `record2.wav`, `record3.wav` are recording files in the former step, `-lang` could be 'en' or 'zh', `-n` is the model name you want)
 
     `python model_generator.py -r1=record1.wav -r2=record2.wav -r3=record3.wav -lang=en -n=my_snowboy_model`
 
-* For more information about parameters, run
+For more information about usage, run
 
     `python model_generator.py -h`
 
