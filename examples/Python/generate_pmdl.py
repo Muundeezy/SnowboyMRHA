@@ -4,7 +4,7 @@ import tempfile
 import uuid
 from scipy.io import wavfile
 from pmdl import snowboy_pmdl_config
-from lib.snowboy_model import SnowboyPersonalEnroll, SnowboyTemplateCut
+from pmdl.snowboy_pmdl import SnowboyPersonalEnroll, SnowboyTemplateCut
 
 def check_enroll_output(enroll_ans):
     if enroll_ans == -1:
