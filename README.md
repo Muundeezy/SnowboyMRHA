@@ -1,29 +1,34 @@
-*Dear KITT.AI users,*
-
-*We are writing this update to let you know that we plan to shut down all KITT.AI products (Snowboy, NLU and Chatflow) by Dec. 31st, 2020.*
-
-*we launched our first product Snowboy in 2016, and then NLU and Chatflow later that year. Since then, we have served more than 85,000 developers, worldwide, accross all our products. It has been 4 extraordinary years in our life, and we appreciate the opportunity to be able to serve the community.*
-
-*The field of artificial intelligence is moving rapidly. As much as we like our products, we still see that they are getting outdated and are becoming difficult to maintain. All official websites/APIs for our products will be taken down by Dec. 31st, 2020. Our github repositories will remain open, but only community support will be available from this point beyond.*
-
-*Thank you all, and goodbye!*
-
-*The KITT.AI Team  
-Mar. 18th, 2020*
-
 # Snowboy Hotword Detection
 
-by [KITT.AI](http://kitt.ai).
-
-[Home Page](https://snowboy.kitt.ai)
-
-[Full Documentation](http://docs.kitt.ai/snowboy) and [FAQ](http://docs.kitt.ai/snowboy#faq)
-
-[Discussion Group](https://groups.google.com/a/kitt.ai/forum/#!forum/snowboy-discussion) (or send email to snowboy-discussion@kitt.ai)
-
-[Commercial application FAQ](README_commercial.md)
+Forked from https://github.com/Kitt-AI/snowboy
 
 Version: 1.3.0 (2/19/2018)
+
+Please contact info@seasalt.ai if you would like to reach out to us.
+
+## New: build your own personal models (Ubuntu 16.04 and macOS)
+* Install dependencies
+```
+    virtualenv -p python2 venv/snowboy
+    source venv/snowboy/bin/activate
+    cd examples/Python
+    pip install -r requirements.txt
+```
+
+* Record 3 wav files (16000 sample rate, 16 bits, 1 channel), each with one hotword, and save them under `examples/Python`, e.g.,
+```
+rec -r 16000 -c 1 -b 16 -e signed-integer -t wav record1.wav
+```
+
+* Run the following command to train your personal model
+```
+python generate_pmdl.py -r1=record1.wav -r2=record2.wav -r3=record3.wav -lang=en -n=hotword.pmdl
+```
+
+* Try the trained personal model
+```
+python demo.py hotword.pmdl
+```
 
 ## Alexa support
 
@@ -109,29 +114,6 @@ sudo bash setup.sh config.json
 * Run the wake word agent with engine set to `kitt_ai`!
 
 
-## Hotword as a Service
-
-Snowboy now offers **Hotword as a Service** through the ``https://snowboy.kitt.ai/api/v1/train/``
-endpoint. Check out the [Full Documentation](http://docs.kitt.ai/snowboy) and example [Python/Bash script](examples/REST_API) (other language contributions are very welcome).
-
-As a quick start, ``POST`` to https://snowboy.kitt.ai/api/v1/train:
-
-	{
-	    "name": "a word",
-	    "language": "en",
-	    "age_group": "10_19",
-	    "gender": "F",
-	    "microphone": "mic type",
-	    "token": "<your auth token>",
-	    "voice_samples": [
-	        {wave: "<base64 encoded wave data>"},
-	        {wave: "<base64 encoded wave data>"},
-	        {wave: "<base64 encoded wave data>"}
-	    ]
-	}
-
-then you'll get a trained personal model in return!
-
 ## Introduction
 
 Snowboy is a customizable hotword detection engine for you to create your own
@@ -177,19 +159,6 @@ If you want support on other hardware/OS, please send your request to
 [snowboy@kitt.ai](mailto:snowboy.kitt.ai)
 
 Note: **Snowboy does not support Windows** yet. Please build Snowboy on *nix platforms.
-
-## Pricing for Snowboy models
-
-Hackers: free
-
-* Personal use
-* Community support
-
-Business: please contact us at [snowboy@kitt.ai](mailto:snowboy@kitt.ai)
-
-* Personal use
-* Commercial license
-* Technical support
 
 ## Pretrained universal models
 
@@ -424,6 +393,7 @@ You are probably using an old version of SWIG. Please upgrade. We have tested wi
 ## Advanced Usages & Demos
 
 See [Full Documentation](http://docs.kitt.ai/snowboy).
+
 
 ## Change Log
 
