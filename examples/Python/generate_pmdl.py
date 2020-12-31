@@ -3,7 +3,6 @@ import argparse
 import tempfile
 import uuid
 from scipy.io import wavfile
-from slugify import slugify
 import snowboy_model_config
 from lib.snowboy_model import SnowboyPersonalEnroll, SnowboyTemplateCut
 
@@ -15,17 +14,14 @@ def check_enroll_output(enroll_ans):
     elif enroll_ans == 2:
         raise Exception("Hotword is too short")
 
-def get_model_name(name):
-    return "{}_{}.pmdl".format(slugify(name), uuid.uuid1())
-
 
 def main():
     parser = argparse.ArgumentParser(description='Command line client for generating snowboy personal model')
     parser.add_argument('-r1', '--record1', dest="record1", required=True, help="Record voice 1")
     parser.add_argument('-r2', '--record2', dest="record2", required=True, help="Record voice 2")
     parser.add_argument('-r3', '--record3', dest="record3", required=True, help="Record voice 3")
+    parser.add_argument('-n', '--name', dest="model_name", required=True, help="Personal model name")
     parser.add_argument('-lang', '--language', default="en", dest="language", help="Language")
-    parser.add_argument('-n', '--name', default="temp", dest="model_name", help="Personal model name")
     args = parser.parse_args()
 
     print("template cut")
@@ -54,7 +50,7 @@ def main():
 
     check_enroll_output(enroll_ans)
 
-    filename = get_model_name(args.model_name)
+    filename = args.model_name
     print("saving file to %s" % filename)
     f = open(filename, "wb")
     f.write(open(out.name).read())
