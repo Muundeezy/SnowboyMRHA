@@ -7,7 +7,7 @@ BITS_PER_SAMPLE = 16
 COMPTYPE = 'NONE'
 COMPNAME = 'not compressed'
 
-RES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'resources/pmdl')
+RES_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), '../resources/pmdl')
 
 DEFAULT_LANG = 'en'
 VAD_RESOURCE = os.path.join(RES_DIR, DEFAULT_LANG, 'personal_enroll.res')

@@ -3,7 +3,7 @@ import argparse
 import tempfile
 import uuid
 from scipy.io import wavfile
-import snowboy_model_config
+from pmdl import snowboy_pmdl_config
 from lib.snowboy_model import SnowboyPersonalEnroll, SnowboyTemplateCut
 
 def check_enroll_output(enroll_ans):
@@ -26,14 +26,14 @@ def main():
 
     print("template cut")
     cut = SnowboyTemplateCut(
-        resource_filename=snowboy_model_config.get_enroll_resource(args.language))
+        resource_filename=snowboy_pmdl_config.get_enroll_resource(args.language))
 
     out = tempfile.NamedTemporaryFile()
     model_path = str(out.name)
 
     print("personal enroll")
     enroll = SnowboyPersonalEnroll(
-        resource_filename=snowboy_model_config.get_enroll_resource(args.language),
+        resource_filename=snowboy_pmdl_config.get_enroll_resource(args.language),
         model_filename=model_path)
 
     assert cut.NumChannels() == enroll.NumChannels()
