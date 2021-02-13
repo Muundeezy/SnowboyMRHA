@@ -28,9 +28,9 @@ int main(int argc, char* argv[]) {
             string str;
             switch (newMode) {
             case -2: str = "silence"; break;
+            case -1: str = "error"; break;
             case  0: str = "noise"; break;
-            case  1: str = "hotword"; break;
-            default: str = "error"; break;
+            default: str = "hotword"; break;
             }
 
             mode = newMode;
