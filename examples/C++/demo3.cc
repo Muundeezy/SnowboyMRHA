@@ -1,5 +1,4 @@
 #include "include/snowboy-detect.h"
-#include <vector>
 #include <iostream>
 #include <string.h>
 
