@@ -88,7 +88,7 @@ extern "C" {
 
 }
 
-#include "../../../../gstreamer/gst-snowboy/gst-plugin/src/snowboy-detect.h"
+#include "snowboy-detect.h"
 
 GST_DEBUG_CATEGORY_STATIC (snowboy_debug);
 #define GST_CAT_DEFAULT snowboy_debug
@@ -106,6 +106,7 @@ struct _GstSnowboy
   gchar *models;
   gchar *sensitivity;
   gfloat gain;
+  gboolean listen;
 
   // Detector instance
   snowboy::SnowboyDetect *detector;
@@ -124,7 +125,8 @@ enum
   PROP_MODELS,
   PROP_RESOURCE,
   PROP_SENSITIVITY,
-  PROP_GAIN
+  PROP_GAIN,
+  PROP_LISTEN,
 };
 
 G_DEFINE_TYPE (GstSnowboy, gst_snowboy,
@@ -181,9 +183,14 @@ gst_snowboy_class_init (GstSnowboyClass * klass)
                            G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class, PROP_GAIN,
-      g_param_spec_float ("gain", "Audio gain", "Floating point value",
+      g_param_spec_float ("gain", "Audio gain", "Input gain at detector",
                            0.0, 1.0, 1.0,
                            G_PARAM_READWRITE));
+
+  g_object_class_install_property (gobject_class, PROP_LISTEN,
+      g_param_spec_boolean ("listen", "Detector listen on/off", "Indicates whether detector is listening or not",
+    		  	  	  	  	TRUE,
+							G_PARAM_READWRITE));
 
   // Signals
   gst_snowboy_signals[HOTWORD_DETECT_SIGNAL] = g_signal_new ("hotword-detect", G_TYPE_FROM_CLASS(klass),
@@ -227,6 +234,7 @@ gst_snowboy_init (GstSnowboy * snowboy)
   snowboy->models = g_strdup("resources/models/snowboy.umdl");
   snowboy->sensitivity = g_strdup("0.5");
   snowboy->gain = 1.0;
+  snowboy->listen = true;
 }
 
 static void gst_snowboy_finalize (GObject * obj)
@@ -269,6 +277,9 @@ gst_snowboy_set_property (GObject * object, guint prop_id,
     case PROP_GAIN:
       snowboy->gain = g_value_get_float (value);
       break;
+    case PROP_LISTEN:
+      snowboy->listen = g_value_get_boolean (value);
+      break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
       break;
@@ -295,6 +306,9 @@ gst_snowboy_get_property (GObject * object, guint prop_id,
       break;
     case PROP_GAIN:
       g_value_set_float (value, snowboy->gain);
+      break;
+    case PROP_LISTEN:
+      g_value_set_boolean (value, snowboy->listen);
       break;
     default:
       G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
@@ -360,11 +374,15 @@ gst_snowboy_filter (GstBaseTransform * base_transform,
       memcpy (map_out.data, map_in.data, map_out.size);
       gst_buffer_unmap (outbuf, &map_out);
     }
-    int result = snowboy->detector->RunDetection((const int16_t* const)map_in.data, map_in.size / 2);
-    if (result > 0) {
-      GST_INFO_OBJECT (snowboy, "model index: %d", result - 1);
-      g_signal_emit (G_OBJECT (snowboy), gst_snowboy_signals[HOTWORD_DETECT_SIGNAL], 0, result - 1);
+
+    if (snowboy->listen) {
+		int result = snowboy->detector->RunDetection((const int16_t* const)map_in.data, map_in.size / 2);
+		if (result > 0) {
+		  GST_INFO_OBJECT (snowboy, "model index: %d", result - 1);
+		  g_signal_emit (G_OBJECT (snowboy), gst_snowboy_signals[HOTWORD_DETECT_SIGNAL], 0, result - 1);
+		}
     }
+
     gst_buffer_unmap (inbuf, &map_in);
   }
 
