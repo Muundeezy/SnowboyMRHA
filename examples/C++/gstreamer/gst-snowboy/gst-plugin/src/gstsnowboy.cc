@@ -97,8 +97,7 @@ GST_DEBUG_CATEGORY_STATIC (snowboy_debug);
 G_DECLARE_FINAL_TYPE (GstSnowboy, gst_snowboy,
     GST, SNOWBOY, GstAudioFilter)
 
-struct _GstSnowboy
-{
+struct _GstSnowboy {
   GstAudioFilter audiofilter;
 
   // Props
@@ -113,14 +112,12 @@ struct _GstSnowboy
 };
 
 
-enum
-{
+enum {
   HOTWORD_DETECT_SIGNAL,
   LAST_SIGNAL
 };
 
-enum
-{
+enum {
   PROP_0,
   PROP_MODELS,
   PROP_RESOURCE,
@@ -168,17 +165,20 @@ gst_snowboy_class_init (GstSnowboyClass * klass)
   gobject_class->get_property = gst_snowboy_get_property;
 
   g_object_class_install_property (gobject_class, PROP_RESOURCE,
-      g_param_spec_string ("resource", "Snowboy resource", "Filename of snowboy resource file",
+      g_param_spec_string ("resource", "Snowboy resource",
+    		  	  	  	   "Filename of snowboy resource file",
                            NULL,
                            G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class, PROP_MODELS,
-		  g_param_spec_string ("models", "Snowboy models", "Comma separated filename(s) of snowboy model file(s)",
+		  g_param_spec_string ("models", "Snowboy models",
+				  	  	  	   "Comma separated filename(s) of snowboy model file(s)",
 		                       NULL,
 		                       G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class, PROP_SENSITIVITY,
-      g_param_spec_string ("sensitivity", "Model sensitivities", "Comma separated floating point value per model",
+      g_param_spec_string ("sensitivity", "Model sensitivities",
+    		  	  	  	   "Comma separated floating point value per model",
                            NULL,
                            G_PARAM_READWRITE));
 
@@ -188,12 +188,14 @@ gst_snowboy_class_init (GstSnowboyClass * klass)
                            G_PARAM_READWRITE));
 
   g_object_class_install_property (gobject_class, PROP_LISTEN,
-      g_param_spec_boolean ("listen", "Detector listen on/off", "Indicates whether detector is listening or not",
+      g_param_spec_boolean ("listen", "Detector listen on/off",
+    		  	  	  	  	"Indicates whether detector is listening or not",
     		  	  	  	  	TRUE,
 							G_PARAM_READWRITE));
 
   // Signals
-  gst_snowboy_signals[HOTWORD_DETECT_SIGNAL] = g_signal_new ("hotword-detect", G_TYPE_FROM_CLASS(klass),
+  gst_snowboy_signals[HOTWORD_DETECT_SIGNAL] = g_signal_new ("hotword-detect",
+		G_TYPE_FROM_CLASS(klass),
         G_SIGNAL_RUN_LAST,
         0,
         NULL, NULL, NULL,
@@ -376,10 +378,15 @@ gst_snowboy_filter (GstBaseTransform * base_transform,
     }
 
     if (snowboy->listen) {
-		int result = snowboy->detector->RunDetection((const int16_t* const)map_in.data, map_in.size / 2);
+		int result = snowboy->detector->RunDetection(
+				(const int16_t* const)map_in.data,
+				map_in.size / 2);
 		if (result > 0) {
 		  GST_INFO_OBJECT (snowboy, "model index: %d", result - 1);
-		  g_signal_emit (G_OBJECT (snowboy), gst_snowboy_signals[HOTWORD_DETECT_SIGNAL], 0, result - 1);
+		  g_signal_emit (G_OBJECT (snowboy),
+				  gst_snowboy_signals[HOTWORD_DETECT_SIGNAL],
+				  0,
+				  result - 1);
 		}
     }
 
