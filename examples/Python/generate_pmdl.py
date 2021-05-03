@@ -6,6 +6,7 @@ from scipy.io import wavfile
 from pmdl import snowboy_pmdl_config
 from pmdl.snowboy_pmdl import SnowboyPersonalEnroll, SnowboyTemplateCut
 import glob
+import os
 
 def check_enroll_output(enroll_ans):
     if enroll_ans == -1:
@@ -27,7 +28,7 @@ def main():
     args = parser.parse_args()
 
     if args.recordDir:
-        recording_set = glob.glob(args.recordDir + '/*.wav')
+        recording_set = glob.glob(os.path.join(args.recordDir + '/*.wav'))
         if len(recording_set) < 3:
             raise exit('The directory needs to contain at least 3 wav files')
     elif args.record1 and args.record2 and args.record3:
