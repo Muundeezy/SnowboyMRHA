@@ -29,6 +29,8 @@ def main():
 
     if args.recordDir:
         recording_set = glob(path.join(args.recordDir + '/*.wav'))
+        if args.record1 or args.record2 or args.record3:
+            print('Warning: The recordings provided using -r1, -r2, and -r3 will be overridden by the files in the directory.')
         if len(recording_set) < 3:
             raise exit('The directory needs to contain at least 3 wav files')
     elif args.record1 and args.record2 and args.record3:
