@@ -174,6 +174,7 @@ Currently we have built wrappers for:
 * Python2/Python3
 * iOS/Swift3 (thanks to @grimlockrocks)
 * iOS/Object-C (thanks to @patrickjquinn)
+* GStreamer plugin with Python3 example (thanks to @liamw9534)
 
 If you want support on other hardware/OS, please send your request to
 [snowboy@kitt.ai](mailto:snowboy.kitt.ai)
